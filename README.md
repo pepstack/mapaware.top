@@ -27,6 +27,8 @@ Copyright © 2024-2030 mapaware.top All Rights Reserved.
 - 安装依赖包
   
   $(PREFIX)/packages/ 包含了需要的依赖。也可以从网上下载得到。
+  
+  参考：BUILD.md
 
 ### Windows 上编译
 
