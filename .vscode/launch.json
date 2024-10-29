@@ -1,0 +1,91 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    //   https://code.visualstudio.com/docs/editor/variables-reference
+    "version": "0.2.0",
+    "configurations": [        
+        {
+            "name": "(mingw64-debug) shapetool",
+            "type": "cppdbg",
+            "request": "launch",
+            "targetArchitecture": "x64",
+            "program": "${workspaceFolder}/source/shapetool/shapetool",
+            "args": [
+                "drawshape"
+                ,"--shpfile", "${workspaceFolder}/shps/area.shp"
+                ,"--outpng", "${workspaceFolder}/output/area.png"
+                ,"--width", "1600"
+                ,"--height", "900"
+                //,"--style-class", "polygon"
+                //,"--style-css", "${workspaceFolder}/shps/area.css"
+            ],
+            "stopAtEntry": true,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": true,
+            "MIMode": "gdb",
+            "miDebuggerPath": "${env:MINGW64_ROOT_BASH}/bin/gdb.exe",
+            "preLaunchTask": "mingw64-debug-build",
+            "setupCommands": [
+                {
+                    "description": "enable pretty printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        },
+        {
+            "name": "(mingw64-debug) mapaware",
+            "type": "cppdbg",
+            "request": "launch",
+            "targetArchitecture": "x64",
+            "program": "${workspaceFolder}/source/mapaware/mapaware",
+            "args": [],
+            "stopAtEntry": true,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": true,
+            "MIMode": "gdb",
+            "miDebuggerPath": "${env:MINGW64_ROOT_BASH}/bin/gdb.exe",
+            "preLaunchTask": "mingw64-debug-build",
+            "setupCommands": [
+                {
+                    "description": "enable pretty printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        },
+		{
+            "name": "(linux64-debug) shapetool",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/source/shapetool/shapetool",
+            "args": [
+                "drawshape"
+                ,"--shpfile", "${workspaceFolder}/shps/area.shp"
+                ,"--outpng", "${workspaceFolder}/output/area.png"
+                ,"--width", "1600"
+                ,"--height", "900"
+                //,"--style-class", "polygon"
+                //,"--style-css", "${workspaceFolder}/shps/area.css"
+            ],
+            "targetArchitecture": "x64",
+            "stopAtEntry": true,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "miDebuggerPath": "/usr/bin/gdb",
+            "preLaunchTask": "linux64-debug-build",
+            "setupCommands": [
+                {
+                    "description": "enable pretty printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        }
+    ]
+}

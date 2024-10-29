@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="source">
+      <UniqueIdentifier>{3d7fef75-ddec-440b-a4c2-c76fd5e0cdc2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\shapetool">
+      <UniqueIdentifier>{55e4799e-bac5-4376-aec4-54570d212086}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\common">
+      <UniqueIdentifier>{bdf04984-077a-4901-bb74-ea28e10630fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\common\win32">
+      <UniqueIdentifier>{c8dc1c2d-2a5c-462a-a157-28d5dfc4347b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="update.bat" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\source\shapetool\cairodrawctx.h">
+      <Filter>source\shapetool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\shapetool\cssdrawstyle.h">
+      <Filter>source\shapetool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\shapetool\drawlayers.h">
+      <Filter>source\shapetool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\shapetool\drawshape.h">
+      <Filter>source\shapetool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\shapetool\maplayers.h">
+      <Filter>source\shapetool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\shapetool\shapetool-common.h">
+      <Filter>source\shapetool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\shapetool\shapetool-version.h">
+      <Filter>source\shapetool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\common\cssparse.h">
+      <Filter>source\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\common\cstrbuf.h">
+      <Filter>source\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\common\smallregex.h">
+      <Filter>source\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\common\viewport.h">
+      <Filter>source\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\common\readconf.h">
+      <Filter>source\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\common\win32\getopt_intw.h">
+      <Filter>source\common\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\common\win32\getoptw.h">
+      <Filter>source\common\win32</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\source\shapetool\drawlayers.c">
+      <Filter>source\shapetool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\shapetool\drawshape.c">
+      <Filter>source\shapetool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\shapetool\maplayers.c">
+      <Filter>source\shapetool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\shapetool\shapetool-main.c">
+      <Filter>source\shapetool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\common\cssparse.c">
+      <Filter>source\common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\common\smallregex.c">
+      <Filter>source\common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\common\readconf.c">
+      <Filter>source\common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\common\win32\getopt_longw.c">
+      <Filter>source\common\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\common\win32\getoptw.c">
+      <Filter>source\common\win32</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

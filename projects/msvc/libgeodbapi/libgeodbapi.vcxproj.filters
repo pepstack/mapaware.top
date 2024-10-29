@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="source">
+      <UniqueIdentifier>{5d02a089-bc30-43ee-bc77-15becafeea01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\geodbapi">
+      <UniqueIdentifier>{f367dba7-301b-4e1c-a381-331fc2295eb4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\common">
+      <UniqueIdentifier>{e62e1091-d0b6-4931-96af-56c6fe974bfc}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\source\geodbapi\geodb_attr.c">
+      <Filter>source\geodbapi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\geodbapi\geodbapi.c">
+      <Filter>source\geodbapi</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\source\geodbapi\geodb_attr.h">
+      <Filter>source\geodbapi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\geodbapi\geodb_layer.h">
+      <Filter>source\geodbapi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\geodbapi\geodbapi.h">
+      <Filter>source\geodbapi</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

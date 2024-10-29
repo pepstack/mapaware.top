@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="source">
+      <UniqueIdentifier>{cd2d638c-7b04-47e8-93c8-40ab14abae60}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\shapefile">
+      <UniqueIdentifier>{89a0fec5-042b-4f18-91e5-cb94d45f874a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\common">
+      <UniqueIdentifier>{c8c7407e-8e76-42d1-877a-d1232cb9adbd}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\source\shapefile\dbfopen.c">
+      <Filter>source\shapefile</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\shapefile\shapefile.c">
+      <Filter>source\shapefile</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\shapefile\shptree.c">
+      <Filter>source\shapefile</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\common\rtree.c">
+      <Filter>source\common</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\source\shapefile\shapefile_api.h">
+      <Filter>source\shapefile</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\shapefile\shapefile_def.h">
+      <Filter>source\shapefile</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\shapefile\shapefile_i.h">
+      <Filter>source\shapefile</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\shapefile\shp2json.h">
+      <Filter>source\shapefile</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\shapefile\shp2wkb.h">
+      <Filter>source\shapefile</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\shapefile\shp2wkt.h">
+      <Filter>source\shapefile</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\common\bo.h">
+      <Filter>source\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\common\rtree.h">
+      <Filter>source\common</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\source\shapefile\VERSION">
+      <Filter>source\shapefile</Filter>
+    </None>
+  </ItemGroup>
+</Project>

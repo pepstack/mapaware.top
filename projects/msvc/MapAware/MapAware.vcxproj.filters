@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="source">
+      <UniqueIdentifier>{6330f5b0-f639-4677-9e00-25f18a0fca11}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\mapaware">
+      <UniqueIdentifier>{2741ea41-18a6-495e-8a53-57d1eed87381}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="update.bat" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\source\mapaware\mapaware-main.c">
+      <Filter>source\mapaware</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
