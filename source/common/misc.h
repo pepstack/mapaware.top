@@ -26,10 +26,10 @@
  *
  * @author mapaware@hotmail.com
  * @copyright © 2024-2030 mapaware.top All Rights Reserved.
- * @version 0.0.28
+ * @version 0.0.29
  *
  * @since 2019-09-30 12:37:44
- * @date 2024-10-16 22:08:41
+ * @date 2024-10-31 23:59:55
  *
  * @note
  */
@@ -614,6 +614,35 @@ finish_up:
 
     /* dont need to know whether config exists or not at all */
     return config;
+}
+
+
+NOWARNING_UNUSED(static)
+int path_is_abspath(char first, char second)
+{
+    // relative path
+    // ./
+    // ../
+    if (first == '.') {
+        return 0;
+    }
+
+    // absolute path
+    //   linux: /home/...
+    //   mingw: /c/...
+    //   cygwin: /cygdrive/c/...
+    if (first == '/') {
+        return 1;
+    }
+
+    // absolute path for windows
+    //   windows: C:\temp\...
+    if (second == ':') {
+        return 1;
+    }
+
+    // relative path
+    return 0;
 }
 
 #ifdef __cplusplus

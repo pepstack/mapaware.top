@@ -96,11 +96,13 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <None Include="..\..\..\maplayers.cfg" />
     <None Include="update.bat" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\source\common\cssparse.h" />
     <ClInclude Include="..\..\..\source\common\cstrbuf.h" />
+    <ClInclude Include="..\..\..\source\common\misc.h" />
     <ClInclude Include="..\..\..\source\common\readconf.h" />
     <ClInclude Include="..\..\..\source\common\smallregex.h" />
     <ClInclude Include="..\..\..\source\common\viewport.h" />

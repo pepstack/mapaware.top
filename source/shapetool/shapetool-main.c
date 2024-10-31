@@ -26,10 +26,10 @@
  *
  * @author mapaware@hotmail.com
  * @copyright © 2024-2030 mapaware.top All Rights Reserved.
- * @version 0.0.15
+ * @version 0.0.16
  *
  * @since 2024-10-03 00:05:20
- * @date 2024-10-27 05:14:41
+ * @date 2024-11-01 01:09:30
  *
  * @note
  */
@@ -50,55 +50,50 @@ static void onexit_cleanup(void)
     cstrbufFree(&options.shpfile);
     cstrbufFree(&options.outpng);
     cstrbufFree(&options.styleclass);
+
+    cstrbufFree(&options.abscurdir);
 }
 
 
-static int check_pathfile_arg(char *filearg, const char *fileext, int existflag)
+static cstrbuf check_pathfile_arg(char *filearg, const char *fileext, int existflag)
 {
     int blen = cstr_length(filearg, SHAPETOOL_PATHLEN_INVALID);
     if (blen == SHAPETOOL_PATHLEN_INVALID) {
         printf("Error: invalid path file: %s\n", optarg);
-        exit(1);
+        return 0;
     }
     if (! cstr_endwith(filearg, blen, fileext, (int)strlen(fileext))) {
         printf("Error: file type mismatch(%s): %s\n", fileext, optarg);
-        exit(1);
+        return 0;
     }
 
-    int found = pathfile_exists(optarg);
+    cstrbuf absfilearg = 0;
+    if (path_is_abspath(filearg[0], filearg[1])) {
+        absfilearg = cstrbufNew(0, filearg, blen);
+    } else {
+        absfilearg = cstrbufCat(0, "%.*s/%.*s", CBSTRLEN(options.abscurdir), CBSTR(options.abscurdir), blen, filearg);
+    }
+    cstr_replace_chr(absfilearg->str, '\\', '/');
+
+    int found = pathfile_exists(CBSTR(absfilearg));
     if (existflag > 0) {
         // 1: file must be exist
         if (! found) {
-            printf("Error: file not found: %s\n", optarg);
-            exit(1);
+            printf("Error: file not found: %.*s\n", CBSTRLEN(absfilearg), CBSTR(absfilearg));
+            cstrbufFree(&absfilearg);
+            return 0;
         }
+
     } else if (existflag < 0) {
         // -1: file must be NOT exist
         if (found) {
-            printf("Error: file exists: %s\n", optarg);
-            exit(1);
+            printf("Error: file exists: %.*s\n", CBSTRLEN(absfilearg), CBSTR(absfilearg));
+            cstrbufFree(&absfilearg);
+            return 0;
         }
     }
 
-    return blen;
-}
-
-
-static cstrbuf set_options_file(char* optargstr, int argchlen, cstrbuf* pathfile)
-{
-    cstrbuf cstr = 0;
-    if (argchlen > 0) {
-        if (cstr_startwith(optargstr, argchlen, FILE_URI_PREFIX, FILE_URI_PREFIX_LEN)) {
-            cstr = cstrbufDup(cstr, optargstr, argchlen);
-        }
-        else {
-            cstr = cstrbufCat(cstr, "%.*s%.*s", FILE_URI_PREFIX_LEN, FILE_URI_PREFIX, argchlen, optargstr);
-        }
-
-        cstr_replace_chr(CBSTR(cstr), '\\', '/');
-        *pathfile = cstr;
-    }
-    return cstr;
+    return absfilearg;
 }
 
 
@@ -126,6 +121,10 @@ static void print_usage()
 int main(int argc, char* argv[])
 {
     WINDOWS_CRTDBG_ON
+
+    options.abscurdir = get_proc_abspath();
+
+    printf("CURDIR=%.*s\n", CBSTRLEN(options.abscurdir), CBSTR(options.abscurdir));
 
     // TEST:
     PJ_CONTEXT *pjctx = proj_context_create();
@@ -198,8 +197,8 @@ int main(int argc, char* argv[])
         case 0:
             switch (flag) {
             case optarg_layerscfg:
-                blen = check_pathfile_arg(optarg, ".cfg", 1);
-                if (set_options_file(optarg, blen, &options.layerscfg)) {
+                options.layerscfg = check_pathfile_arg(optarg, ".cfg", 1);
+                if (options.layerscfg) {
                     flags.layerscfg = 1;
                 }
                 break;
@@ -207,14 +206,14 @@ int main(int argc, char* argv[])
                 options.mapid = cstrbufDup(options.mapid, optarg, cstrbuf_error_size_len);
                 break;
             case optarg_shpfile:
-                blen = check_pathfile_arg(optarg, ".shp", 1);
-                if (set_options_file(optarg, blen, &options.shpfile)) {
+                options.shpfile = check_pathfile_arg(optarg, ".shp", 1);
+                if (options.shpfile) {
                     flags.shpfile = 1;
                 }
                 break;
             case optarg_outpng:
-                blen = check_pathfile_arg(optarg, ".png", -1);
-                if (set_options_file(optarg, blen, &options.outpng)) {
+                options.outpng = check_pathfile_arg(optarg, ".png", -1);
+                if (options.outpng) {
                     flags.outpng = 1;
                 }
                 break;
@@ -252,15 +251,17 @@ int main(int argc, char* argv[])
                     printf("Error: invalid style css\n");
                     exit(1);
                 }
-                cstrbuf cssPathfile = 0;
                 if (strchr(optarg, '{') && strchr(optarg, '}') && strchr(optarg, '{') != optarg) {
                     // css string
                     options.cssStyleKeys = cssStyleLoadString(optarg, blen);
                 }
-                else if (set_options_file(optarg, blen, &cssPathfile)) {
-                    options.cssStyleKeys = cssStyleLoadFile(CSTR_FILE_URI_PATH(cssPathfile));
+                else {
+                    cstrbuf cssfile = check_pathfile_arg(optarg, ".css", 1);
+                    if (cssfile) {
+                        options.cssStyleKeys = cssStyleLoadFile(CBSTR(cssfile));
+                    }
+                    cstrbufFree(&cssfile);
                 }
-                cstrbufFree(&cssPathfile);
                 if (options.cssStyleKeys) {
                     flags.style = 1;
                 }
@@ -285,16 +286,16 @@ int main(int argc, char* argv[])
         if (! flags.style) {
             // If both stylecss not given:
             //   set 'a.shp' with default style css file: 'a.css'
-            cstrbuf cssPathfile = cstrbufCat(0, "%.*s.css", CBSTRLEN(options.shpfile) - 4, CBSTR(options.shpfile));
-            printf("Info: use default style css: %s\n", CBSTR(cssPathfile));
+            cstrbuf cssfile = cstrbufCat(0, "%.*s.css", CBSTRLEN(options.shpfile) - 4, CBSTR(options.shpfile));
+            printf("Info: use default style css: %s\n", CBSTR(cssfile));
 
             // check if default css file exists
-            if (! pathfile_exists(CSTR_FILE_URI_PATH(cssPathfile))) {
-                printf("Error: style css file not found: %.*s\n", CBSTRLEN(cssPathfile), CBSTR(cssPathfile));
+            if (! pathfile_exists(CBSTR(cssfile))) {
+                printf("Error: style css file not found: %.*s\n", CBSTRLEN(cssfile), CBSTR(cssfile));
                 exit(1);
             }
-            options.cssStyleKeys = cssStyleLoadFile(CSTR_FILE_URI_PATH(cssPathfile));
-            cstrbufFree(&cssPathfile);
+            options.cssStyleKeys = cssStyleLoadFile(CBSTR(cssfile));
+            cstrbufFree(&cssfile);
 
             if (options.cssStyleKeys) {
                 flags.style = 1;

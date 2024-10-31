@@ -26,10 +26,10 @@
  *
  * @author mapaware@hotmail.com
  * @copyright © 2024-2030 mapaware.top All Rights Reserved.
- * @version 0.0.10
+ * @version 0.0.11
  *
  * @since 2024-10-15 01:33:13
- * @date 2024-10-17 21:49:31
+ * @date 2024-11-01 00:33:39
  *
  * @note
  *   https://github.com/pepstack/shapefile
@@ -45,7 +45,7 @@ int shpfile2png(shapetool_flags *flags, shapetool_options *options)
     cairo_status_t status;
 
     // load shp file: file:///path/to/some.shp
-    if (shapeFileInfoOpen(&shpInfo, CSTR_FILE_URI_PATH(options->shpfile)) != 0) {
+    if (shapeFileInfoOpen(&shpInfo, CBSTR(options->shpfile)) != 0) {
         return SHAPETOOL_RES_ERR;
     }
 
@@ -92,7 +92,7 @@ int shpfile2png(shapetool_flags *flags, shapetool_options *options)
     // draw shapes onto cairo
     shapeFileInfoDraw(&shpInfo, &CDC);
 
-    status = cairoDrawCtxOutputPng(&CDC, 0, CSTR_FILE_URI_PATH(options->outpng));
+    status = cairoDrawCtxOutputPng(&CDC, 0, CBSTR(options->outpng));
 
     cairoDrawCtxFinal(&CDC);
 

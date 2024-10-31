@@ -1,7 +1,10 @@
 @ECHO OFF
 
-echo "copy: %~dp0..\..\..\deps\shapefile\projects\msvc\shapefile\output\%1\shapefile.dll => %~dp0output\%1\"
-copy /Y "%~dp0..\..\..\deps\shapefile\projects\msvc\shapefile\output\%1\shapefile.dll" "%~dp0output\%1\"
+echo "copy: %~dp0..\..\..\projects\msvc\libshapefile\output\%1\libshapefile.dll => %~dp0output\%1\"
+copy /Y "%~dp0..\..\..\projects\msvc\libshapefile\output\%1\libshapefile.dll" "%~dp0output\%1\"
+
+echo "copy: %~dp0..\..\..\projects\msvc\libgeodbapi\output\%1\libgeodbapi.dll => %~dp0output\%1\"
+copy /Y "%~dp0..\..\..\projects\msvc\libgeodbapi\output\%1\libgeodbapi.dll" "%~dp0output\%1\"
 
 echo "copy: %~dp0..\..\..\deps\pthreads-w32\Pre-built.2\dll\x64\pthreadVC2.dll => %~dp0output\%1\"
 copy /Y "%~dp0..\..\..\deps\pthreads-w32\Pre-built.2\dll\x64\pthreadVC2.dll" "%~dp0output\%1\"

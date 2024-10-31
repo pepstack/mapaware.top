@@ -26,10 +26,10 @@
  *
  * @author mapaware@hotmail.com
  * @copyright © 2024-2030 mapaware.top All Rights Reserved.
- * @version 0.0.6
+ * @version 0.0.7
  *
  * @since 2024-10-16 21:58:17
- * @date 2024-10-28 12:49:38
+ * @date 2024-11-01 01:16:12
  *
  * @note
  */
@@ -45,6 +45,7 @@ extern "C" {
 #include <common/uthash/uthash.h>
 #include <common/uthash/utarray.h>
 
+
 struct MapLayerData {
     cstrbuf layerid;   /* Use this field as the key */
 
@@ -52,7 +53,7 @@ struct MapLayerData {
     cstrbuf stylefile;
     cstrbuf styleclass;
 
-    UT_hash_handle hh; /* makes this structure hashable */
+    // UT_hash_handle hh; /* makes this structure hashable */
 };
 
 
@@ -62,11 +63,50 @@ struct MapLayersCfg {
     cstrbuf proj4def;
 
     UT_array * layers_array;
-    struct MapLayerData * layers_hash;
 };
 
 
+// UT_icd functions
+static void MapLayerDataInit(void * _elt)
+{
+    struct MapLayerData * elt = (struct MapLayerData *) _elt;
+    bzero(elt, sizeof(struct MapLayerData));
+}
+
+
+static void MapLayerDataCopy(void * _dst, const void * _src)
+{
+    const struct MapLayerData* src = (struct MapLayerData*)_src;
+    struct MapLayerData* dst = (struct MapLayerData*)_dst;
+
+    dst->layerid = src->layerid;
+    dst->shpfile = src->shpfile;
+    dst->stylefile = src->stylefile;
+    dst->styleclass = src->styleclass;
+}
+
+
+static void MapLayerDataDtor(void* _elt)
+{
+    struct MapLayerData* elt = (struct MapLayerData*)_elt;
+    cstrbufFree(&elt->layerid);
+    cstrbufFree(&elt->shpfile);
+    cstrbufFree(&elt->stylefile);
+    cstrbufFree(&elt->styleclass);
+}
+
+
+static UT_icd maplayerdata_icd = { sizeof(struct MapLayerData), MapLayerDataInit, MapLayerDataCopy, MapLayerDataDtor };
+
+// MapLayersCfg APIs
+//
 void MapLayersCfgInit(struct MapLayersCfg *layersCfg);
+
+void MapLayersCfgUninit(struct MapLayersCfg* layersCfg);
+
+void MapLayersCfgAdd(struct MapLayersCfg* layersCfg, const struct MapLayerData *layer);
+
+void MapLayersCfgPrint(const struct MapLayersCfg* layersCfg);
 
 
 #ifdef  __cplusplus

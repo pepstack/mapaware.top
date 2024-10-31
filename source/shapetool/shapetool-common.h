@@ -26,10 +26,10 @@
  *
  * @author mapaware@hotmail.com
  * @copyright © 2024-2030 mapaware.top All Rights Reserved.
- * @version 0.0.16
+ * @version 0.0.17
  *
  * @since 2024-10-16 22:13:24
- * @date 2024-10-29 11:48:44
+ * @date 2024-11-01 00:28:28
  *
  * @note
  */
@@ -79,21 +79,12 @@ extern "C" {
 #define SHAPETOOL_LAYERS_MAX      1024  // 最多的图层数
 
 
-#define FILE_URI_PREFIX  "file://"
-#define FILE_URI_PREFIX_LEN      7      // strlen("file://")
-
-#define PATH_IS_FILE_URI(path)      ((const char *) strstr((path), FILE_URI_PREFIX)) == ((const char*)(path))
-
-// file:///path/to => /path/to
-#define FILE_URI_PATH(szpath)         (&((szpath)[FILE_URI_PREFIX_LEN]))
-#define CSTR_FILE_URI_PATH(cspath)    FILE_URI_PATH(CBSTR(cspath))
-
-
 static const char* commands[] = {
     "drawshape",
     "drawlayers",
     0
 };
+
 
 typedef enum {
     command_first_pos = 0,
@@ -129,8 +120,11 @@ typedef struct {
 
 
 typedef struct {
-    cstrbuf layerscfg;
-    cstrbuf mapid;
+    cstrbuf abscurdir;   // absolute current path
+
+    cstrbuf layerscfg;   // config file for MapLayersCfg
+    cstrbuf mapid;       // map ident
+
     cstrbuf shpfile;
     cstrbuf outpng;
 

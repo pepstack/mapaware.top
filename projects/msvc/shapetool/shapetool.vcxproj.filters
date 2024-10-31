@@ -16,6 +16,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="update.bat" />
+    <None Include="..\..\..\maplayers.cfg" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\source\shapetool\cairodrawctx.h">
@@ -59,6 +60,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\source\common\win32\getoptw.h">
       <Filter>source\common\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\common\misc.h">
+      <Filter>source\common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

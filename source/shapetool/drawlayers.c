@@ -26,10 +26,10 @@
  *
  * @author mapaware@hotmail.com
  * @copyright © 2024-2030 mapaware.top All Rights Reserved.
- * @version 0.0.4
+ * @version 0.0.5
  *
  * @since 2024-10-16 22:31:46
- * @date 2024-10-27 05:13:44
+ * @date 2024-11-01 01:16:58
  *
  * @note
  *   https://github.com/pepstack/shapefile
@@ -38,10 +38,13 @@
 #include "drawlayers.h"
 
 
-
 int maplayers2png(shapetool_flags *flags, shapetool_options *options)
 {
-    const char* CfgFile = CSTR_FILE_URI_PATH(options->layerscfg);
+    struct MapLayersCfg maplayers = { 0 };
+
+    MapLayersCfgInit(&maplayers);
+
+    const char* CfgFile = CBSTR(options->layerscfg);
 
     // 读环境变量
     ConfVariables vars = { 0 };
@@ -57,6 +60,10 @@ int maplayers2png(shapetool_flags *flags, shapetool_options *options)
     int secs = ConfGetSectionList(CfgFile, &sections);
     if (secs > 0) {
         char buffer[READCONF_MAX_LINESIZE];
+        int buflen;
+
+        char layerbuf[SHAPETOOL_PATHLEN_INVALID];
+        int layerbuflen;
 
         for (int i = 0; i < secs; ++i) {
             char* sec, * family, * qualifier;
@@ -66,27 +73,87 @@ int maplayers2png(shapetool_flags *flags, shapetool_options *options)
                 if (!cstr_compare_len(family, -1, "map", 3, 0) && !cstr_compare_len(qualifier, -1, options->mapid->str, options->mapid->len, 0)) {
                     printf("[%s:%s]\n", family, qualifier);
 
-                    int buflen = ConfReadValueParsed(CfgFile, "map", options->mapid->str, "layers", buffer, sizeof(buffer));
+                    maplayers.mapid = cstrbufDup(maplayers.mapid, options->mapid->str, options->mapid->len);
 
-                    printf("layers={%.*s}\n", buflen, buffer);
+                    buflen = ConfReadValueParsed(CfgFile, "map", options->mapid->str, "description", buffer, sizeof(buffer));
+                    if (buflen) {
+                        maplayers.description = cstrbufDup(maplayers.description, buffer, buflen);
+                    }
 
-                    char *layerid[SHAPETOOL_LAYERS_MAX];
+                    buflen = ConfReadValueParsed(CfgFile, "map", options->mapid->str, "proj4def", buffer, sizeof(buffer));
+                    if (buflen) {
+                        maplayers.proj4def = cstrbufDup(maplayers.proj4def, buffer, buflen);
+                    }
+
+                    char* layerids[SHAPETOOL_LAYERS_MAX];
                     int idlens[SHAPETOOL_LAYERS_MAX];
-                    int layers = cstr_slpit_chr(buffer, buflen, 32, layerid, idlens, sizeof(idlens)/sizeof(idlens[0]));
+                    int layers = 0;
 
-                    for (int j = 0; j < layers; j++) {
-                        printf("[layer:%.*s]\n", idlens[j], layerid[j]);
+                    buflen = ConfReadValueParsed(CfgFile, "map", options->mapid->str, "layers", buffer, sizeof(buffer));
+                    if (buflen) {
+                        layers = cstr_slpit_chr_nodup(buffer, buflen, 32, layerids, idlens, sizeof(idlens) / sizeof(idlens[0]));
 
-                        int valuelen = ConfReadValueParsed2(CfgFile, "layer", layerid[j], idlens[j], "shpfile", buffer, sizeof(buffer));
-                        if (valuelen > 0) {
-                            char* valuebuf = 0;
-                            valuelen = ConfVariablesReplace(buffer, valuelen, &vars, &valuebuf);
+                        for (int k = 0; k < layers; k++) {
+                            char* output = 0;
+                            int outlen;
 
-                            printf("shpfile=%.*s\n", valuelen, valuebuf);
-                            ConfMemFree(valuebuf);
+                            struct MapLayerData layerdata;
+                            MapLayerDataInit(&layerdata);
+
+                            layerdata.layerid = cstrbufDup(0, layerids[k], idlens[k]);
+
+                             // shpfile
+                            layerbuflen = ConfReadValueParsed2(CfgFile, "layer", CBSTR(layerdata.layerid), CBSTRLEN(layerdata.layerid), "shpfile", layerbuf, sizeof(layerbuf));
+                            if (layerbuflen > 0) {
+                                outlen = ConfVariablesReplace(layerbuf, layerbuflen, &vars, &output);
+                                if (outlen) {
+                                    layerdata.shpfile = cstrbufDup(layerdata.shpfile, output, outlen);
+                                    ConfMemFree(output);
+                                }
+                            }
+
+                            // stylefile
+                            layerbuflen = ConfReadValueParsed2(CfgFile, "layer", CBSTR(layerdata.layerid), CBSTRLEN(layerdata.layerid), "stylefile", layerbuf, sizeof(layerbuf));
+                            if (layerbuflen > 0) {
+                                outlen = ConfVariablesReplace(layerbuf, layerbuflen, &vars, &output);
+                                if (outlen) {
+                                    layerdata.stylefile = cstrbufDup(layerdata.stylefile, output, outlen);
+                                    ConfMemFree(output);
+                                }
+                            }
+
+                            // styleclass
+                            layerbuflen = ConfReadValueParsed2(CfgFile, "layer", CBSTR(layerdata.layerid), CBSTRLEN(layerdata.layerid), "styleclass", layerbuf, sizeof(layerbuf));
+                            if (layerbuflen > 0) {
+                                outlen = ConfVariablesReplace(layerbuf, layerbuflen, &vars, &output);
+                                if (outlen) {
+                                    layerdata.styleclass = cstrbufDup(layerdata.styleclass, output, outlen);
+                                    ConfMemFree(output);
+                                }
+                            }
+
+                            // groups
+                            layerbuflen = ConfReadValueParsed2(CfgFile, "layer", CBSTR(layerdata.layerid), CBSTRLEN(layerdata.layerid), "groups", layerbuf, sizeof(layerbuf));
+                            if (layerbuflen > 0) {
+                                outlen = ConfVariablesReplace(layerbuf, layerbuflen, &vars, &output);
+                                if (outlen) {
+                                    // layerdata.groups = cstrbufDup(layerdata.groups, output, outlen);
+                                    ConfMemFree(output);
+                                }
+                            }
+
+                            // states
+                            layerbuflen = ConfReadValueParsed2(CfgFile, "layer", CBSTR(layerdata.layerid), CBSTRLEN(layerdata.layerid), "states", layerbuf, sizeof(layerbuf));
+                            if (layerbuflen > 0) {
+                                outlen = ConfVariablesReplace(layerbuf, layerbuflen, &vars, &output);
+                                if (outlen) {
+                                    // layerdata.states = cstrbufDup(layerdata.states, output, outlen);
+                                    ConfMemFree(output);
+                                }
+                            }
+
+                            MapLayersCfgAdd(&maplayers, &layerdata);
                         }
-
-                        mem_free(layerid[j]);
                     }
                 }
             }
@@ -95,5 +162,10 @@ int maplayers2png(shapetool_flags *flags, shapetool_options *options)
 
     ConfSectionListFree(sections);
     ConfVariablesClear(&vars);
+
+    MapLayersCfgPrint(&maplayers);
+
+    MapLayersCfgUninit(&maplayers);
+
     return SHAPETOOL_RES_ERR;
 }
