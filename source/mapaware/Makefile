@@ -3,7 +3,7 @@
 #
 # @copyright Copyright(c) 2024, mapaware.top
 # @since 2024-10-29 13:01:28
-# @date 2024-10-30 00:16:13
+# @date 2024-11-02 12:48:25
 ########################################################################
 # Linux, CYGWIN_NT, MSYS_NT, ...
 shuname = "$(shell uname)"
@@ -50,7 +50,7 @@ BUILD ?= RELEASE
 CFLAGS += -std=gnu11 -D_GNU_SOURCE -fPIC -Wall -Wno-unused-function -Wno-unused-variable -Wno-unused-but-set-variable
 
 # load libs: -lpthread = libpthread.so
-LDFLAGS += -lm -lpthread -lcairo -lshapefile -lgeodbapi -lproj-22
+LDFLAGS += -lm -lpthread -lcairo -lshapefile -lgeodbapi -lsqlite3mc-0 -lproj-22
 
 ifeq ($(BUILD), DEBUG)
     # make BUILD=DEBUG
@@ -76,10 +76,11 @@ LIBDIRS := -L/usr/local/lib -L/usr/local/lib64 -L/usr/local/bin \
 ifeq ($(OSARCH), MINGW64)
 	CFLAGS += -Dmain=SDL_main -D__MINGW64__ -m64
 	INCDIRS += -I/mingw64/include -I$(SDL2_MINGW64_ROOT)/include
-	LIBDIRS += -L/mingw64/lib -L$(SDL2_MINGW64_ROOT)/lib
+	LIBDIRS += -L/mingw64/lib -L$(SDL2_MINGW64_ROOT)/lib -L../../deps/sqlite3mc-1.9.0-mingw/bin
 	LDFLAGS += -lmingw32 -lSDL2main -lSDL2 -mwindows -lws2_32
 else ifeq ($(OSARCH), LINUX64)
 	CFLAGS += -D__LINUX__
+	LIBDIRS += -L../../deps/sqlite3mc-1.9.0/lib
     LDFLAGS += -lSDL2 -lrt
 else
 	$(error $(OSARCH) is not supported)

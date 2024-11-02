@@ -11,11 +11,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\source\common\cJSON.c" />
     <ClCompile Include="..\..\..\source\geodbapi\geodbapi.c" />
     <ClCompile Include="..\..\..\source\geodbapi\geodb_attr.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\source\common\cJSON.h" />
     <ClInclude Include="..\..\..\source\geodbapi\geodbapi.h" />
+    <ClInclude Include="..\..\..\source\geodbapi\geodbapi_i.h" />
     <ClInclude Include="..\..\..\source\geodbapi\geodb_attr.h" />
     <ClInclude Include="..\..\..\source\geodbapi\geodb_layer.h" />
   </ItemGroup>
@@ -55,14 +58,14 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(ProjectDir)output\$(Platform)-$(Configuration)\</OutDir>
     <IntDir>$(ProjectDir)build\$(Platform)-$(Configuration)\</IntDir>
-    <IncludePath>$(ProjectDir)..\..\..\source;$(ProjectDir)..\..\..\geodbapi;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)..\..\..\projects\msvc\libshapefile\output\$(Platform)-$(Configuration);$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)..\..\..\source;$(ProjectDir)..\..\..\geodbapi;$(ProjectDir)..\..\..\deps\sqlite3mc-1.9.0-mingw\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)..\..\..\projects\msvc\libshapefile\output\$(Platform)-$(Configuration);$(ProjectDir)..\..\..\deps\sqlite3mc-1.9.0-mingw\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(ProjectDir)output\$(Platform)-$(Configuration)\</OutDir>
     <IntDir>$(ProjectDir)build\$(Platform)-$(Configuration)\</IntDir>
-    <IncludePath>$(ProjectDir)..\..\..\source;$(ProjectDir)..\..\..\geodbapi;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)..\..\..\projects\msvc\libshapefile\output\$(Platform)-$(Configuration);$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)..\..\..\source;$(ProjectDir)..\..\..\geodbapi;$(ProjectDir)..\..\..\deps\sqlite3mc-1.9.0-mingw\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)..\..\..\projects\msvc\libshapefile\output\$(Platform)-$(Configuration);$(ProjectDir)..\..\..\deps\sqlite3mc-1.9.0-mingw\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -75,7 +78,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>libshapefile.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libshapefile.lib;libsqlite3mc.dll.a;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -93,7 +96,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>libshapefile.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libshapefile.lib;libsqlite3mc.dll.a;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

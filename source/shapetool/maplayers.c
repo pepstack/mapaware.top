@@ -26,10 +26,10 @@
  *
  * @author mapaware@hotmail.com
  * @copyright © 2024-2030 mapaware.top All Rights Reserved.
- * @version 0.0.6
+ * @version 0.0.7
  *
  * @since 2024-10-16 21:58:17
- * @date 2024-11-01 01:24:43
+ * @date 2024-11-01 10:54:12
  *
  * @note
  */
@@ -38,8 +38,10 @@
 
 void MapLayersCfgInit(struct MapLayersCfg* layersCfg)
 {
+    bzero(layersCfg, sizeof(*layersCfg));
     utarray_new(layersCfg->layers_array, &maplayerdata_icd);
 }
+
 
 void MapLayersCfgUninit(struct MapLayersCfg* layersCfg)
 {
@@ -50,10 +52,18 @@ void MapLayersCfgUninit(struct MapLayersCfg* layersCfg)
     utarray_free(layersCfg->layers_array);
 }
 
-void MapLayersCfgAdd(struct MapLayersCfg* layersCfg, const struct MapLayerData* layer)
+
+void MapLayersCfgAddLayer(struct MapLayersCfg* layersCfg, const struct MapLayerData* layer)
 {
     utarray_push_back(layersCfg->layers_array, layer);
 }
+
+
+int MapLayersCfgGetLayers(const struct MapLayersCfg* layersCfg)
+{
+    return utarray_len(layersCfg->layers_array);
+}
+
 
 void MapLayersCfgPrint(const struct MapLayersCfg* layersCfg)
 {

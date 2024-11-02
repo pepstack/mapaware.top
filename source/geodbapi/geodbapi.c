@@ -25,8 +25,48 @@
  * @author 350137278@qq.com
  * @brief Geography Database API
  *
- * @version 1.0.1
+ * @version 1.0.2
  * @create     2013-04-24
- * @date 2024-10-05 19:38:20
+ * @date 2024-11-02 02:09:40
  */
-#include "geodbapi.h"
+#include "geodbapi_i.h"
+
+
+static int on_next_row(void* userarg, int column_size, char* column_value[], char* column_name[])
+{
+    int i;
+
+    for (i = 0; i < column_size; i++) {
+        printf("%s = %s\n", column_name[i], (char*)column_value[i]);
+    }
+    printf("----\n");
+    return 0;
+}
+
+
+int geodb_context_open(const char* dbfile)
+{
+    int ret, flags;
+    char * err;
+
+    ret = sqlite3_config(SQLITE_CONFIG_MULTITHREAD);
+
+    ret = sqlite3_initialize();
+
+    flags = SQLITE_OPEN_NOMUTEX | SQLITE_OPEN_FULLMUTEX | SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE | SQLITE_OPEN_SHAREDCACHE;
+
+    sqlite3 *geodb = 0;
+    ret = sqlite3_open_v2(dbfile, &geodb, flags, 0);
+
+    ret = sqlite3_key_v2(geodb, 0, "pass", 4);
+
+    err = 0;
+    ret = sqlite3_exec(geodb, "select * from abc", on_next_row, 0 /* userdata */, &err);
+    if (err) {
+        sqlite3_free(err);
+    }
+
+
+    ret = sqlite3_close_v2(geodb);
+    return ret;
+}

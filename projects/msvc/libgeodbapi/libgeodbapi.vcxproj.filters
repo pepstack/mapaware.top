@@ -18,6 +18,9 @@
     <ClCompile Include="..\..\..\source\geodbapi\geodbapi.c">
       <Filter>source\geodbapi</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\source\common\cJSON.c">
+      <Filter>source\common</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\source\geodbapi\geodb_attr.h">
@@ -27,6 +30,12 @@
       <Filter>source\geodbapi</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\geodbapi\geodbapi.h">
+      <Filter>source\geodbapi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\common\cJSON.h">
+      <Filter>source\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\geodbapi\geodbapi_i.h">
       <Filter>source\geodbapi</Filter>
     </ClInclude>
   </ItemGroup>

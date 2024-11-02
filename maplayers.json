@@ -1,0 +1,62 @@
+{
+	"encode": "utf-8",
+	"environments": {
+		"USA": "D:/MapData/USA",
+		"USA_FLORIDA": "$(USA)/Florida-ArcGIS",
+		"SPACE": " "
+	},
+	"map": {
+		"default": {
+			"description": "",
+			"proj4def": null,
+			"layers": [ "Florida_County_Lines", "City_Boundaries", "Florida_Counties" ]
+		},
+		"USA Florida": {
+			"description": "",
+			"proj4def": null,
+			"layers": [ "Florida_County_Lines", "City_Boundaries", "Florida_Counties" ]
+		}
+	},
+	"layer": {
+		"Florida_Counties": {
+			"shpfile": "$(USA_FLORIDA)/Florida_Counties-shp/Florida_Counties.shp",
+			"groups": [],
+			"states": [ "open" ]
+		},
+		"City_Boundaries": {
+			"shpfile": "$(USA_FLORIDA)/City_Boundaries-shp/City_Boundaries.shp",
+			"groups": [],
+			"states": [ "open" ]
+		},
+		"County_Roads_TDA": {
+			"shpfile": "$(USA_FLORIDA)/County_Roads_TDA-shp/County_Roads_TDA.shp",
+			"groups": [],
+			"states": [ "open" ]
+		},
+		"Florida_County_Lines": {
+			"shpfile": "$(USA_FLORIDA)/Florida_County_Lines-shp/Florida_County_Lines.shp",
+			"groups": [],
+			"states": [ "open" ]
+		},
+		"Florida_COVID19_Cases_by_Zip_Code": {
+			"shpfile": "$(USA_FLORIDA)/Florida_COVID19_Cases_by_Zip_Code-shp/Florida_COVID19_Cases_by_Zip_Code.shp",
+			"groups": [],
+			"states": [ "open" ]
+		},
+		"Functional_Classification_TDA": {
+			"shpfile": "$(USA_FLORIDA)/Functional_Classification_TDA-shp/Functional_Classification_TDA.shp",
+			"groups": [],
+			"states": [ "open" ]
+		},
+		"Off_System_TDA": {
+			"shpfile": "$(USA_FLORIDA)/Off_System_TDA-shp/Off_System_TDA.shp",
+			"groups": [],
+			"states": [ "open" ]
+		},
+		"WMS_Lakes_Resource_2019": {
+			"shpfile": "$(USA_FLORIDA)/WMS_Lakes_Resource_2019-shp/WMS_Lakes_Resource_2019.shp",
+			"groups": [],
+			"states": [ "open" ]
+		}
+	}
+}

@@ -17,6 +17,7 @@
   <ItemGroup>
     <None Include="update.bat" />
     <None Include="..\..\..\maplayers.cfg" />
+    <None Include="..\..\..\maplayers.json" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\source\shapetool\cairodrawctx.h">
@@ -64,6 +65,9 @@
     <ClInclude Include="..\..\..\source\common\misc.h">
       <Filter>source\common</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\source\common\cJSON.h">
+      <Filter>source\common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\source\shapetool\drawlayers.c">
@@ -92,6 +96,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\source\common\win32\getoptw.c">
       <Filter>source\common\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\common\cJSON.c">
+      <Filter>source\common</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

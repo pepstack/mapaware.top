@@ -26,10 +26,10 @@
  *
  * @author mapaware@hotmail.com
  * @copyright © 2024-2030 mapaware.top All Rights Reserved.
- * @version 0.0.16
+ * @version 0.0.17
  *
  * @since 2024-10-03 00:05:20
- * @date 2024-11-01 01:09:30
+ * @date 2024-11-01 09:49:40
  *
  * @note
  */
@@ -45,7 +45,7 @@ static void onexit_cleanup(void)
 {
     CssKeyArrayFree(options.cssStyleKeys);
 
-    cstrbufFree(&options.layerscfg);
+    cstrbufFree(&options.maplayers);
     cstrbufFree(&options.mapid);
     cstrbufFree(&options.shpfile);
     cstrbufFree(&options.outpng);
@@ -116,7 +116,7 @@ static void print_usage()
  *
  *   $ shapetool drawshape --shpfile ../../../shps/area.shp --outpng ../../../output/area2.png --stylecss ".polygon { border: 3 solid #000FFF; fill: 1 solid #CFF000}"
  *
- *   $ shapetool drawlayers --layerscfg maplayers.cfg --mapid default --outpng ../../../output/map-default.png
+ *   $ shapetool drawlayers --maplayers maplayers.json --mapid default --outpng ../../../output/map-default.png
  */
 int main(int argc, char* argv[])
 {
@@ -143,7 +143,7 @@ int main(int argc, char* argv[])
         {"help", no_argument, 0, 'h'}
         ,{"version", no_argument, 0, 'V'}
         ,{"shpfile", required_argument, &flag, optarg_shpfile}
-        ,{"layerscfg", required_argument, &flag, optarg_layerscfg}
+        ,{"maplayers", required_argument, &flag, optarg_maplayers}
         ,{"mapid", required_argument, &flag, optarg_mapid}
         ,{"outpng", required_argument, &flag, optarg_outpng}
         ,{"width", required_argument, &flag, optarg_width}
@@ -196,10 +196,16 @@ int main(int argc, char* argv[])
             break;
         case 0:
             switch (flag) {
-            case optarg_layerscfg:
-                options.layerscfg = check_pathfile_arg(optarg, ".cfg", 1);
-                if (options.layerscfg) {
-                    flags.layerscfg = 1;
+            case optarg_maplayers:
+                options.maplayers = check_pathfile_arg(optarg, ".json", 1);
+                if (options.maplayers) {
+                    flags.maplayers = 1;
+                }
+                else {
+                    options.maplayers = check_pathfile_arg(optarg, ".cfg", 1);
+                    if (options.maplayers) {
+                        flags.maplayers = 1;
+                    }
                 }
                 break;
             case optarg_mapid:
@@ -321,8 +327,8 @@ int main(int argc, char* argv[])
         shpfile2png(&flags, &options);
     }
     else if (command == command_drawlayers) {
-        if (!flags.layerscfg) {
-            printf("Error: no layers config file specified (use: --layerscfg CFGFILE).\n");
+        if (!flags.maplayers) {
+            printf("Error: no layers config file specified (use: --maplayers PATHFILE).\n");
             exit(1);
         }
 
@@ -330,6 +336,7 @@ int main(int argc, char* argv[])
             printf("Error: no output png file specified (use: --outpng PNGFILE)\n");
             exit(1);
         }
+
         if (!options.mapid) {
             printf("Warn: no mapid specified (use: --mapid MAPID). so we use [map:default])\n");
             options.mapid = cstrbufDup(options.mapid, "default", 7);

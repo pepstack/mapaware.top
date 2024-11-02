@@ -25,9 +25,9 @@
  * @author 350137278@qq.com
  * @brief geodb_layer
  *
- * @version 1.0.1
- * @create     2013-04-24
- * @date 2024-10-05 22:47:44
+ * @version 1.0.2
+ * @since 2024-11-01 01:28:43
+ * @date 2024-11-02 01:08:43
  */
 #ifndef GEODB_LAYER_H__
 #define GEODB_LAYER_H__

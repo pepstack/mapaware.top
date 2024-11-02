@@ -6,6 +6,12 @@ copy /Y "%~dp0..\..\..\projects\msvc\libshapefile\output\%1\libshapefile.dll" "%
 echo "copy: %~dp0..\..\..\projects\msvc\libgeodbapi\output\%1\libgeodbapi.dll => %~dp0output\%1\"
 copy /Y "%~dp0..\..\..\projects\msvc\libgeodbapi\output\%1\libgeodbapi.dll" "%~dp0output\%1\"
 
+echo "copy: %~dp0..\..\..\deps\sqlite3mc-1.9.0-mingw\bin\libsqlite3mc-0.dll => %~dp0output\%1\"
+copy /Y "%~dp0..\..\..\deps\sqlite3mc-1.9.0-mingw\bin\libsqlite3mc-0.dll" "%~dp0output\%1\"
+
+echo "copy: %~dp0..\..\..\deps\sqlite3mc-1.9.0-mingw\bin\sqlite3shell.exe => %~dp0output\%1\"
+copy /Y "%~dp0..\..\..\deps\sqlite3mc-1.9.0-mingw\bin\sqlite3shell.exe" "%~dp0output\%1\"
+
 echo "copy: %~dp0..\..\..\deps\pthreads-w32\Pre-built.2\dll\x64\pthreadVC2.dll => %~dp0output\%1\"
 copy /Y "%~dp0..\..\..\deps\pthreads-w32\Pre-built.2\dll\x64\pthreadVC2.dll" "%~dp0output\%1\"
 
@@ -17,6 +23,9 @@ copy /Y "%~dp0..\..\..\deps\cairo-windows-1.17.2\lib\x64\cairo.dll" "%~dp0output
 
 echo "copy: %~dp0..\..\..\maplayers.cfg => %~dp0output\%1\"
 copy /Y "%~dp0..\..\..\maplayers.cfg" "%~dp0output\%1\"
+
+echo "copy: %~dp0..\..\..\maplayers.json => %~dp0output\%1\"
+copy /Y "%~dp0..\..\..\maplayers.json" "%~dp0output\%1\"
 
 if "%1" == "x64-Debug" (
 	echo "update %1 DLLs OK"

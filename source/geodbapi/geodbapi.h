@@ -25,9 +25,9 @@
  * @author 350137278@qq.com
  * @brief Geography Database API
  *
- * @version 1.0.1
- * @create     2013-04-24
- * @date 2024-10-28 21:32:55
+ * @version 1.0.2
+ * @since 2024-11-01 01:28:37
+ * @date 2024-11-02 01:16:54
  */
 #ifndef GEODBAPI_H__
 #define GEODBAPI_H__
@@ -54,6 +54,7 @@ extern "C" {
 #define GEODB_NAMELEN_MAX    30
 
 
+
 typedef struct geodb_attr_t     * geodb_attr;
 typedef struct geodb_conn_t     * geodb_conn;
 typedef struct geodb_layer_t    * geodb_layer;
@@ -66,6 +67,9 @@ typedef struct shape_filter_t   * shape_filter;
 typedef enum {
     conn_attr = 0
 } geodb_attr_name;
+
+
+
 
 
 // geodb_attr API
@@ -121,6 +125,9 @@ GEODBAPI void geodb_shape_free(geodb_shape shape);
 // shape_filter API
 GEODBAPI int geodb_query_shapes(geodb_conn dbconn, geodb_layer layer, shape_filter filter);
 
+/////////////////////////////////////////////////////////////
+
+GEODBAPI int geodb_context_open(const char *dbfile);
 
 #ifdef    __cplusplus
 }

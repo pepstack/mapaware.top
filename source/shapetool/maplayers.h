@@ -26,10 +26,10 @@
  *
  * @author mapaware@hotmail.com
  * @copyright © 2024-2030 mapaware.top All Rights Reserved.
- * @version 0.0.7
+ * @version 0.0.8
  *
  * @since 2024-10-16 21:58:17
- * @date 2024-11-01 01:16:12
+ * @date 2024-11-01 10:20:11
  *
  * @note
  */
@@ -42,6 +42,7 @@ extern "C" {
 
 #include <common/cstrbuf.h>
 #include <common/readconf.h>
+#include <common/cJSON.h>
 #include <common/uthash/uthash.h>
 #include <common/uthash/utarray.h>
 
@@ -104,9 +105,11 @@ void MapLayersCfgInit(struct MapLayersCfg *layersCfg);
 
 void MapLayersCfgUninit(struct MapLayersCfg* layersCfg);
 
-void MapLayersCfgAdd(struct MapLayersCfg* layersCfg, const struct MapLayerData *layer);
+void MapLayersCfgAddLayer(struct MapLayersCfg* layersCfg, const struct MapLayerData *layer);
 
 void MapLayersCfgPrint(const struct MapLayersCfg* layersCfg);
+
+int MapLayersCfgGetLayers(const struct MapLayersCfg* layersCfg);
 
 
 #ifdef  __cplusplus

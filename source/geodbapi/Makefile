@@ -3,7 +3,7 @@
 #
 # @copyright Copyright(c) 2024, mapaware.top
 # @since 2024-10-29 13:01:23
-# @date 2024-10-29 23:38:03
+# @date 2024-11-02 12:47:37
 ########################################################################
 # Linux, CYGWIN_NT, MSYS_NT, ...
 shuname = "$(shell uname)"
@@ -49,7 +49,7 @@ BUILD ?= RELEASE
 CFLAGS += -std=gnu11 -D_GNU_SOURCE -fPIC -Wall -Wno-unused-function -Wno-unused-variable -Wno-unused-but-set-variable
 
 # load libs: -lpthread = libpthread.so
-LDFLAGS += -lm -lpthread
+LDFLAGS += -lm -lpthread -lshapefile -lsqlite3mc-0 -lproj-22
 
 ifeq ($(BUILD), DEBUG)
     # make BUILD=DEBUG
@@ -68,16 +68,18 @@ CSRCS := $(foreach cdir, $(CURDIR), $(wildcard $(cdir)/*.c))
 # Get names of object files: '1.o 2.o'
 COBJS := $(patsubst %.c, %.o, $(notdir $(CSRCS)))
 
-LIBDIRS := -L/usr/local/lib -L/usr/local/lib64 -L/usr/local/bin
+LIBDIRS := -L/usr/local/lib -L/usr/local/lib64 -L/usr/local/bin \
+	-L../shapefile
 
 
 ifeq ($(OSARCH), MINGW64)
 	CFLAGS += -D__MINGW64__ -m64
-	INCDIRS += -I/mingw64/include
-	LIBDIRS += -L/mingw64/lib
+	INCDIRS += -I/mingw64/include -I../../deps/sqlite3mc-1.9.0-mingw/include
+	LIBDIRS += -L/mingw64/lib -L../../deps/sqlite3mc-1.9.0-mingw/bin
 	LDFLAGS += -lws2_32
 else ifeq ($(OSARCH), LINUX64)
 	CFLAGS += -D__LINUX__
+	LIBDIRS += -L../../deps/sqlite3mc-1.9.0/lib
     LDFLAGS += -lrt
 else
 	$(error $(OSARCH) is not supported)
@@ -117,7 +119,7 @@ $(DYNAMICLIB_VERNAME).$(OSARCH): $(COBJS)
 	@rm -f $(DYNAMICLIB_VERNAME)
 	$(CC) $(CFLAGS) $(LIBDIRS) -shared \
 		-Wl,--soname=$(DYNAMICLIB_VERNAME) \
-		-Wl,--rpath='.' \
+		-Wl,--rpath='.:/usr/local/lib' \
 		$^ -o $@ \
 		$(LDFLAGS)
 	@ln -s $@ $(DYNAMICLIB_VERNAME)

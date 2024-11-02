@@ -1,27 +1,12 @@
-/**
- * mman.c
- *  mmap api for windows only.
- *
- *  In particular, mmap, munmap, and msync are not available on Windows. These
- *   replacements are used on both Cygwin and MinGW. (On Cygwin the built-in mmap
- *   has no write support, and is not used).
- *
- * Special thanks to Horea Haitonic for contributing mmap.c and mman.h
- * Original Author is Horea Haitonic, April 2007
- * Updated by ZhangLiang to support 64bits, 2015
- */
 #include <stdlib.h>
-
-#include <Windows.h>
-
+#include <windows.h>
 #ifdef _WIN32
-# include <io.h>
+#include <io.h>
 #endif
-
 #include <errno.h>
-
 #include "mman.h"
 
+static const char id[]="$Id: tpl.c 107 2007-04-20 17:11:29Z thanson $";
 
 /**
  * @brief Map a file to a memory region
@@ -37,7 +22,7 @@
  * @param offset offset into mapped object
  * @return pointer to the memory region, or NULL in case of error
  */
-void *mmap(void *addr, size_t len, int prot, int flags, int fd, unsigned int offset)
+void *mmap(void *addr, unsigned int len, int prot, int flags, int fd, unsigned int offset)
 {
 	DWORD wprot;
 	DWORD waccess;
@@ -68,9 +53,9 @@ void *mmap(void *addr, size_t len, int prot, int flags, int fd, unsigned int off
 		wprot = PAGE_EXECUTE_READWRITE;
 		break;
 	}
-
+	
 	/* Obtaing handle to map region */
-	h = CreateFileMappingA((HANDLE) _get_osfhandle(fd), 0, wprot, HIDWORD(len), LODWORD(len), 0);
+	h = CreateFileMapping((HANDLE) _get_osfhandle(fd), 0, wprot, 0, len, 0);
 	if (h == NULL) {
 		DWORD error = GetLastError();
 
@@ -90,7 +75,7 @@ void *mmap(void *addr, size_t len, int prot, int flags, int fd, unsigned int off
 		}
 		return MAP_FAILED;
 	}
-
+			
 
 	/* Translate sharing options into WIN32 constants */
 	switch (wprot) {
@@ -123,10 +108,8 @@ void *mmap(void *addr, size_t len, int prot, int flags, int fd, unsigned int off
 		CloseHandle(h);
 		return MAP_FAILED;
 	}
-
-    /* OK to call UnmapViewOfFile after this */
-	CloseHandle(h);
-
+	CloseHandle(h); /* ok to call UnmapViewOfFile after this */
+	
 	/* All fine */
 	return region;
 }
@@ -136,12 +119,12 @@ void *mmap(void *addr, size_t len, int prot, int flags, int fd, unsigned int off
  * @brief Unmap a memory region
  *
  * This is a wrapper around UnmapViewOfFile in the win32 API
- *
+ * 
  * @param addr start address
  * @param len length of the region
  * @return 0 for success, -1 for error
  */
-int munmap(void *addr, size_t len)
+int munmap(void *addr, int len) 
 {
 	if (UnmapViewOfFile(addr)) {
 		return 0;
@@ -163,11 +146,11 @@ int munmap(void *addr, size_t len)
  * @param flags sync options -- currently ignored
  * @return 0 for success, -1 for error
  */
-int msync(char *addr, size_t len, int flags)
+int msync(char *addr, int len, int flags) 
 {
 	if (FlushViewOfFile(addr, len) == 0) {
 		DWORD error = GetLastError();
-
+		
 		/* Try and translate some error codes */
 		switch (error) {
 		case ERROR_INVALID_PARAMETER:

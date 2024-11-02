@@ -26,10 +26,10 @@
  *
  * @author mapaware@hotmail.com
  * @copyright © 2024-2030 mapaware.top All Rights Reserved.
- * @version 0.0.17
+ * @version 0.0.18
  *
  * @since 2024-10-16 22:13:24
- * @date 2024-11-01 00:28:28
+ * @date 2024-11-01 09:46:07
  *
  * @note
  */
@@ -95,8 +95,8 @@ typedef enum {
 
 
 typedef enum {
-    optarg_layerscfg = 1,
-    optarg_mapid,
+    optarg_mapid = 1,
+    optarg_maplayers,
     optarg_shpfile,
     optarg_outpng,
     optarg_width,          // width in dots
@@ -108,7 +108,7 @@ typedef enum {
 
 
 typedef struct {
-    unsigned int layerscfg : 1;
+    unsigned int maplayers : 1;
     unsigned int shpfile : 1;
     unsigned int outpng : 1;
     unsigned int width : 1;
@@ -122,7 +122,7 @@ typedef struct {
 typedef struct {
     cstrbuf abscurdir;   // absolute current path
 
-    cstrbuf layerscfg;   // config file for MapLayersCfg
+    cstrbuf maplayers;   // config file for MapLayersCfg (.cfg or .json)
     cstrbuf mapid;       // map ident
 
     cstrbuf shpfile;

@@ -1,22 +1,5 @@
-/**
- * mman.h
- *  mmap api for windows only.
- *
- *  In particular, mmap, munmap, and msync are not available on Windows. These
- *   replacements are used on both Cygwin and MinGW. (On Cygwin the built-in mmap
- *   has no write support, and is not used).
- *
- * Special thanks to Horea Haitonic for contributing mmap.c and mman.h
- * Original Author is Horea Haitonic, April 2007
- * Updated by ZhangLiang to support 64bits, 2015
- */
 #ifndef _MMAN_H_
 #define _MMAN_H_
-
-#if defined(__cplusplus)
-extern "C"
-{
-#endif
 
 /* Protections */
 #define PROT_NONE       0x00    /* no permissions */
@@ -51,33 +34,19 @@ extern "C"
 #define S_IROTH 0
 #endif
 
-/* for 64bits */
-#ifndef HIDWORD
-# define HIDWORD(x)    ((DWORD)(((DWORD64)(x) >> 32) & 0xFFFFFFFF))
-#endif
-
-#ifndef LODWORD
-# define LODWORD(x)    ((DWORD)(((DWORD_PTR)(x)) & 0xFFFFFFFF))
-#endif
-
-
 /**
  * Map a file to a memory region
  */
-extern void *mmap(void *addr, size_t len, int prot, int flags, int fd, unsigned int offset);
+void *mmap(void *addr, unsigned int len, int prot, int flags, int fd, unsigned int offset);
 
 /**
  * Unmap a memory region
  */
-extern int munmap(void *addr, size_t len);
+int munmap(void *addr, int len);
 
 /**
  * Synchronize a mapped region
  */
-extern int msync(char *addr, size_t len, int flags);
-
-#ifdef __cplusplus
-}
-#endif
+int msync(char *addr, int len, int flags);
 
 #endif	/* _MMAN_H_ */
